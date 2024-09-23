@@ -1,7 +1,7 @@
 <template>
     <div class="search-bar-container">
         <div class="search-bar">
-            <input type="text" name="" id="" v-model.trim="query" placeholder="Pikachu" @keydown.enter.stop="emitSearchQuery" >
+            <input type="text" name="" id="" v-model.trim="query" @keydown.enter.stop="emitSearchQuery" placeholder="Pikachu" >
             <button @click="emitSearchQuery"><i class='bx bx-search'></i></button>
         </div>
         
@@ -16,6 +16,7 @@ export default {
             query: ''
         }
     },
+    props: ['placeHolderProp'],
     methods: {
         emitSearchQuery(){
             this.$emit('searchSignal', this.query);

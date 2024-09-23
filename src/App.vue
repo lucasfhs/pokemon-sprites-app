@@ -1,72 +1,89 @@
 <template>
-
   <main>
     <h1 class="pokemon-title">Pokémon Sprites</h1>
     <div id="app">
       <search-bar @searchSignal="apiFetch($event)" />
     </div>
     <div class="sprites">
+      
       <div class="button-container">
-        <button class="button-30" @click="generateSprites">Clear Sprites</button>
+        <p class="msg-error" v-if="errorBool">Sprite not found &#128531;</p>
+        <button class="button-30" @click="resetSprites">Clear Sprites</button>
       </div>
-
       <div class="sprites-container">
-        <sprite-container v-for="(pokemon, index) in urlSprite" :key="index" :name="pokemon.nameSprite" :url="pokemon.urlSprite" />
+        <sprite-container 
+          v-for="(pokemon, index) in urlSprite" 
+          :key="index" 
+          :name="pokemon.nameSprite" 
+          :url="pokemon.urlSprite" />
       </div>
     </div>
   </main>
-
 </template>
 
 <script>
 import 'boxicons/css/boxicons.min.css';
 
 export default {
-
   data: function () {
     return {
       url_api: 'https://pokeapi.co/api/v2/',
       objSprite: null,
       urlSprite: [],
+      errorBool: false
     }
   },
   methods: {
     async apiFetch(query) {
       try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${query}`);
+        const response = await fetch(`${this.url_api}pokemon/${query}`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
 
-        if (data) {
+        if (data && data.sprites) {
           this.objSprite = data.sprites;
-          // Chamada correta de generateSprites
           this.generateSprites(this.objSprite);
         }
+        this.errorBool = false;
       } catch (error) {
+        this.errorBool = true;
         console.error('There has been a problem with your fetch operation:', error);
       }
     },
     generateSprites(objSprite) {
-      for (let v in objSprite) {
-        if (typeof v === 'string' && v !== 'versions' && v !== 'other' && objSprite[v] != null){
-          console.log({'nameSprite':v,'urlSprite':objSprite[v]});
-          this.urlSprite.push({'nameSprite':v,'urlSprite':objSprite[v]});
+      this.urlSprite = []; // Limpa a lista antes de adicionar novos sprites
+      for (let key in objSprite) {
+        const spriteUrl = objSprite[key];
+        // Verifica se é uma string (URL) válida
+        if (typeof spriteUrl === 'string' && spriteUrl) {
+          this.urlSprite.push({
+            nameSprite: key,
+            urlSprite: spriteUrl,
+          });
         }
-    
       }
+    },
+    resetSprites() {
+      this.urlSprite = []; // Reseta a lista de sprites
+      this.objSprite = null;
+      console.log('Sprites limpos:', this.urlSprite);
     }
-  },
-  resetSprites(){
-    this.objSprite = null,
-    this.urlSprite = [];
   }
 }
 </script>
 
 <style>
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+.msg-error{
+  font-size: 24px;
+  padding: 3px;
+  border-radius: 3px;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  margin-right: 46px;
+}
 
 .button-container{
   display: flex;
