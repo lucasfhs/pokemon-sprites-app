@@ -1,6 +1,9 @@
-# pokemon-data
-![Titulo](./preview-project.gif)
+# pokemon-sprites-search
+![](./preview-project.gif)
 
+Hello, I'm excited to introduce you to one of my projects!
+
+The project uses Vue 2 with Vue CLI to create a Pokémon sprite viewer by connecting to 'https://pokeapi.co/'. The idea is to quickly retrieve Pokémon sprites to assist in the potential development of a game or similar projects.
 
 ## Project setup
 ```
