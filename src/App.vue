@@ -6,8 +6,12 @@
       <search-bar @searchSignal="apiFetch($event)" />
     </div>
     <div class="sprites">
-      <div  class="sprites-container">
-        <sprite-container v-for="poke in this.urlSprite" :key="poke.id" :name="'oi'" :url="poke" />
+      <div class="button-container">
+        <button class="button-30" @click="generateSprites">Clear Sprites</button>
+      </div>
+
+      <div class="sprites-container">
+        <sprite-container v-for="(pokemon, index) in urlSprite" :key="index" :name="pokemon.nameSprite" :url="pokemon.urlSprite" />
       </div>
     </div>
   </main>
@@ -39,58 +43,142 @@ export default {
           this.objSprite = data.sprites;
           // Chamada correta de generateSprites
           this.generateSprites(this.objSprite);
-          // console.log(data);
-          console.log(this.objSprite);
-          console.log(this.urlSprite);
         }
       } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
       }
     },
     generateSprites(objSprite) {
-      /*
-  
-      for (let [key, value] of Object.entries(objSprite)) {
-        if (value && key && ) {
-          this.urlSprite.push(value);
-        }
-      }
-      */
       for (let v in objSprite) {
-        if (typeof v === 'string' && v !== 'versions' && v !== 'other' && objSprite[v] != null)
-          this.urlSprite.push(objSprite[v]);
+        if (typeof v === 'string' && v !== 'versions' && v !== 'other' && objSprite[v] != null){
+          console.log({'nameSprite':v,'urlSprite':objSprite[v]});
+          this.urlSprite.push({'nameSprite':v,'urlSprite':objSprite[v]});
+        }
+    
       }
     }
+  },
+  resetSprites(){
+    this.objSprite = null,
+    this.urlSprite = [];
   }
 }
 </script>
 
 <style>
 
+
+.button-container{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.clear-button {
+  width: 120px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid black;
+  background-color: #ffde00;
+  outline: none;
+  transition: 0.4ms all ease-out;
+  border-radius: 2px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+.clear-button:hover {
+  background-color: #FFF;
+}
+
+
+/* CSS */
+.button-30 {
+  align-items: center;
+  appearance: none;
+  background-color: #FCFCFD;
+  border-radius: 4px;
+  border-width: 0;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: #36395A;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "JetBrains Mono",monospace;
+  height: 48px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: 16px;
+  padding-right: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow .15s,transform .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow,transform;
+  font-size: 18px;
+}
+
+.button-30:focus {
+  box-shadow: #D6D6E7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+}
+
+.button-30:hover {
+  box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
+  transform: translateY(-2px);
+}
+
+.button-30:active {
+  box-shadow: #D6D6E7 0 3px 7px inset;
+  transform: translateY(2px);
+}
+
+
+
+
 .sprites {
+
   padding: 6px;
   border: 0.5px solid black;
   margin: 0 auto;
   margin-top: 20px;
   min-height: 70vh;
   height: auto;
-  width: 80%;
+  max-width: 90%;
+  width: auto;
   background-color: rgba(0, 0, 255, 0.6);
   grid-template-columns: repeat(3, 1fr);
   /* Cria 3 colunas com tamanhos iguais */
   gap: 6px;
   /* Espaçamento entre os itens */
   padding: 20px;
+  position: relative;
 
 }
+
 .sprites-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Cria 3 colunas com tamanhos iguais */
-  gap: 20px; /* Espaçamento entre os itens */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  /* Espaçamento entre os itens */
   padding: 20px;
-  justify-content: center; /* Centraliza o grid horizontalmente */
-  align-items: center; /* Centraliza os itens verticalmente (se necessário) */
+  justify-content: center;
+  /* Centraliza o grid horizontalmente */
+  align-items: center;
+  /* Centraliza os itens verticalmente */
 }
+
+/* 
+@media (max-width: 820px) {
+  .sprites-container {
+    grid-template-columns: 1fr; 
+  }
+*/
+
 
 
 @font-face {
