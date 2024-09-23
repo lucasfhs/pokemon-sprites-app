@@ -1,8 +1,10 @@
 <template>
-    <div>
+    <div class="search-bar-container">
         <div class="search-bar">
-            <input type="text" name="" id="" v-model.trim="query" placeholder="Gengar?" @keydown.enter.stop="emitSearchQuery" >
+            <input type="text" name="" id="" v-model.trim="query" placeholder="Pikachu" @keydown.enter.stop="emitSearchQuery" >
+            <button @click="emitSearchQuery"><i class='bx bx-search'></i></button>
         </div>
+        
     </div>
 </template>
 
@@ -28,19 +30,24 @@ export default {
 
 .search-bar {
     display: flex;
-    padding-top: 6px;
-    display: block;
+    justify-content: center;
+    padding-top: 10px;
     text-align: center;
     width: 100%;
 }
 
-.search-bar input {
+.search-bar input{
     padding-left: 8px;
     margin-left: 2px;
     outline: none;
     font-family: "Poppins", sans-serif;
     font-size: 36px;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 14px 28px, rgba(0, 0, 0, 0.15) 0px 10px 10px;
+    max-width: 80%;
+}
+button {
+    padding: 6px;
+    font-size: 36px;
 }
 
 </style>
