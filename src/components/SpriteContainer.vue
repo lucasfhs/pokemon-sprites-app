@@ -2,7 +2,7 @@
   <div class="container">
     <p class="subtitle">Sprite name:</p>
     <p class="subtitle">{{ name }}</p>
-    <img :src="url" alt="Sprite do Pokémon">
+    <img :src="url" alt="pokemon game sprite" loading="lazy">
   </div>
 </template>
 
@@ -23,6 +23,7 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 .container {
   width: 220px;
   height: 250px;
@@ -44,12 +45,8 @@ export default {
   color: white;
   text-shadow:
     -0.5px -0.5px 0 #000,
-    /* Sombra no topo à esquerda */
     0.5px -0.5px 0 #000,
-    /* Sombra no topo à direita */
     -0.5px 0.5px 0 #000,
-    /* Sombra na base à esquerda */
     0.5px 0.5px 0 #000;
-  /* Sombra na base à direita */  
 }
 </style>

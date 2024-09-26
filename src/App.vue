@@ -5,16 +5,13 @@
       <search-bar @searchSignal="apiFetch($event)" />
     </div>
     <div class="sprites">
-      
+
       <div class="button-container">
-        <p class="msg-error" v-if="errorBool">Sprite not found &#128531;</p>
+        <p class="msg-error" v-if="errorSignal">Sprite not found &#128531;</p>
         <button class="button-30" @click="resetSprites">Clear Sprites</button>
       </div>
       <div class="sprites-container">
-        <sprite-container 
-          v-for="(pokemon, index) in urlSprite" 
-          :key="index" 
-          :name="pokemon.nameSprite" 
+        <sprite-container v-for="(pokemon, index) in urlSprite" :key="index" :name="pokemon.nameSprite"
           :url="pokemon.urlSprite" />
       </div>
     </div>
@@ -30,7 +27,7 @@ export default {
       url_api: 'https://pokeapi.co/api/v2/',
       objSprite: null,
       urlSprite: [],
-      errorBool: false
+      errorSignal: false
     }
   },
   methods: {
@@ -46,17 +43,16 @@ export default {
           this.objSprite = data.sprites;
           this.generateSprites(this.objSprite);
         }
-        this.errorBool = false;
+        this.errorSignal = false;
       } catch (error) {
-        this.errorBool = true;
+        this.errorSignal = true;
         console.error('There has been a problem with your fetch operation:', error);
       }
     },
     generateSprites(objSprite) {
-      this.urlSprite = []; // Limpa a lista antes de adicionar novos sprites
+      this.urlSprite = [];
       for (let key in objSprite) {
         const spriteUrl = objSprite[key];
-        // Verifica se é uma string (URL) válida
         if (typeof spriteUrl === 'string' && spriteUrl) {
           this.urlSprite.push({
             nameSprite: key,
@@ -66,7 +62,7 @@ export default {
       }
     },
     resetSprites() {
-      this.urlSprite = []; // Reseta a lista de sprites
+      this.urlSprite = [];
       this.objSprite = null;
       console.log('Sprites limpos:', this.urlSprite);
     }
@@ -76,7 +72,38 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-.msg-error{
+
+@font-face {
+  font-family: 'pokemon-font';
+  src: url('./assets/font/Pokemon_Solid.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+}
+
+main {
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  background-color: #b3a125;
+  background-image:
+    linear-gradient(to right, #3b4cca 1px, transparent 1px),
+    linear-gradient(to bottom, #3b4cca 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.msg-error {
   font-size: 24px;
   padding: 3px;
   border-radius: 3px;
@@ -85,11 +112,12 @@ export default {
   margin-right: 46px;
 }
 
-.button-container{
+.button-container {
   display: flex;
   justify-content: end;
   align-items: center;
 }
+
 .clear-button {
   width: 120px;
   height: 36px;
@@ -103,24 +131,23 @@ export default {
   cursor: pointer;
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
+
 .clear-button:hover {
   background-color: #FFF;
 }
 
-
-/* CSS */
 .button-30 {
   align-items: center;
   appearance: none;
   background-color: #FCFCFD;
   border-radius: 4px;
   border-width: 0;
-  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px,#D6D6E7 0 -3px 0 inset;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px, rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #D6D6E7 0 -3px 0 inset;
   box-sizing: border-box;
   color: #36395A;
   cursor: pointer;
   display: inline-flex;
-  font-family: "JetBrains Mono",monospace;
+  font-family: "JetBrains Mono", monospace;
   height: 48px;
   justify-content: center;
   line-height: 1;
@@ -131,12 +158,12 @@ export default {
   position: relative;
   text-align: left;
   text-decoration: none;
-  transition: box-shadow .15s,transform .15s;
+  transition: box-shadow .15s, transform .15s;
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
   white-space: nowrap;
-  will-change: box-shadow,transform;
+  will-change: box-shadow, transform;
   font-size: 18px;
 }
 
@@ -154,9 +181,6 @@ export default {
   transform: translateY(2px);
 }
 
-
-
-
 .sprites {
 
   padding: 6px;
@@ -169,9 +193,7 @@ export default {
   width: auto;
   background-color: rgba(0, 0, 255, 0.6);
   grid-template-columns: repeat(3, 1fr);
-  /* Cria 3 colunas com tamanhos iguais */
   gap: 6px;
-  /* Espaçamento entre os itens */
   padding: 20px;
   position: relative;
 
@@ -181,28 +203,9 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  /* Espaçamento entre os itens */
   padding: 20px;
   justify-content: center;
-  /* Centraliza o grid horizontalmente */
   align-items: center;
-  /* Centraliza os itens verticalmente */
-}
-
-/* 
-@media (max-width: 820px) {
-  .sprites-container {
-    grid-template-columns: 1fr; 
-  }
-*/
-
-
-
-@font-face {
-  font-family: 'pokemon-font';
-  src: url('./assets/font/Pokemon\ Solid.ttf');
-  font-weight: normal;
-  font-style: normal;
 }
 
 .pokemon-title {
@@ -212,36 +215,8 @@ export default {
   color: #ffde00;
   text-shadow:
     -4px -4px 0 #3b4cca,
-    /* Sombra no topo à esquerda */
     4px -4px 0 #3b4cca,
-    /* Sombra no topo à direita */
     -4px 4px 0 #3b4cca,
-    /* Sombra na base à esquerda */
     4px 4px 0 #3b4cca;
-  /* Sombra na base à direita */
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  background-color: #b3a125;
-  background-image:
-    linear-gradient(to right, #3b4cca 1px, transparent 1px),
-    linear-gradient(to bottom, #3b4cca 1px, transparent 1px);
-  background-size: 50px 50px;
-  /* Tamanho de cada quadrado do grid */
-}
-
-
-main {
-  height: 100vh;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  box-sizing: border-box;
 }
 </style>
